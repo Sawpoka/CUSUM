@@ -6,7 +6,7 @@ import numpy as np
 time, event_value = np.loadtxt("Aufgabe7_CUSUM.txt", unpack = True)
 
 # Einlesen/Ausrechnen eines Mittelwertes:
-# w = float(input("Mittelwert eingeben: "))
+s = float(input("Faktor der Standartabweichung angeben: "))
 w = np.average(event_value)
 std_dev = np.std(event_value)
 print(std_dev)
@@ -16,8 +16,13 @@ print(w)
 
 c = 0.0
 i = 0
-while i < len(event_value):
+h = s*std_dev
+b = True
+while i < len(event_value) and b:
     c = c + (event_value[i] - w)
+    if c < -h or c > h:
+        print("CUSUM an Stelle " + str(i) + " zur Zeit " + str(time[i]) + " Minuten ab Start der Sonde.")
+        b = False
     i += 1
 
 
