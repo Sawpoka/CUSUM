@@ -15,11 +15,11 @@ if number > len(time):
 # Alternativ: number = len(event_value) [für alle Messwerte]
 
 n = float(input("Faktor der Standartabweichung eingeben: "))       # Grenzwertberechnung
-w = np.average(event_value)                                        # Erwartungswert
+w = np.mean(event_value)                                        # Erwartungswert
 std_dev = np.std(event_value)
 print("Der Mittelwert der Messwerte beträgt: " + str(w))
 print("Die Standartabweichung der Messwerte beträgt: " + str(std_dev))
-w = np.average(event_value[0:1000])  # Als Alternative den Erwartungswert eingeben
+#w = np.average(event_value[0:1000])  # Als Alternative den Erwartungswert eingeben
 
 s = [.0] * number
 time_s = time[:number]
