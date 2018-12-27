@@ -44,10 +44,10 @@ while i < number:
     if (s[i] < -h or s[i] > h) and bool:
         print("CUSUM an der Stelle  " + str(i) + "  zur Zeit  " + str(time[i]) + "  Minuten ab Start der Sonde.")
         bool = False
-    if (sp[i] < -h or sp[i] > h) and boolp:
+    if sp[i] > h and boolp:
         print("CUSUM+ an der Stelle  " + str(i) + "  zur Zeit  " + str(time[i]) + "  Minuten ab Start der Sonde.")
         boolp = False
-    if (sn[i] < -h or sn[i] > h) and booln:
+    if sn[i] < -h and booln:
         print("CUSUM- an der Stelle  " + str(i) + "  zur Zeit  " + str(time[i]) + "  Minuten ab Start der Sonde.")
         booln = False
     i += 1
@@ -57,7 +57,14 @@ if bool == True:
     print("Kein CUSUM. s[" + str(i) + "] beträgt: " + str(s[i]))
 else:
     print("s[" + str(i) + "] beträgt: " + str(s[i]))
-
+if boolp == True:
+    print("Kein CUSUM+. sp[" + str(i) + "] beträgt: " + str(s[i]))
+else:
+    print("sp[" + str(i) + "] beträgt: " + str(s[i]))
+if booln == True:
+    print("Kein CUSUM-. sn[" + str(i) + "] beträgt: " + str(s[i]))
+else:
+    print("sn[" + str(i) + "] beträgt: " + str(s[i]))
 
 # Plotten der Ereignissanzahl (y-Achse) auf die Zeit (x-Achse):
 # TODO: Mit Marker und Zeitstempel
