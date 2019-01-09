@@ -8,16 +8,18 @@ import time as tm
 
 time, event_value = np.loadtxt("Aufgabe7_CUSUM.txt", unpack = True)
 
-print("Der eingelesene Datensatz enthält " + str(len(time)) + " Werte.")
-
+# print("Der eingelesene Datensatz enthält " + str(len(time)) + " Werte.")
+#
 # Eingabe der Teilanzahl des Datensatzes die mit dem Programm getestet werden sollen
-number = int(input("Anzahl der zu testenen Daten eingeben: ")) # = len(event_value)
-if number > len(time):
-    print("Number ist größer als der Datensatz (" + str(len(time)) + " Werte)")
-    exit()          # Beendet das Programm, falls _number_ zu groß ist
-
+# number = int(input("Anzahl der zu testenen Daten eingeben: ")) # = len(event_value)
+# if number > len(time):
+#    print("Number ist größer als der Datensatz (" + str(len(time)) + " Werte)")
+#    exit()          # Beendet das Programm, falls _number_ zu groß ist
+#
 
 start = tm.time()
+
+number = (len(time))
 
 w = np.mean(event_value)                                        # Erwartungswert
 print("Der Mittelwert der Messwerte beträgt: " + str(w))
@@ -27,20 +29,28 @@ s = [.0] * number
 sp = [.0] * number
 sn = [.0] * number
 time_s = time[:number]
-h = 100*w                   # Grenzwert
+h = 5*w                   # Grenzwert
 i = 0
 bool = True
 boolp = True
 booln = True
 while i < number:
+    #ALT: value_negative = min(0, event_value[i] - w)
+    #ALT: value_positive = max(0, event_value[i] - w)
+    value_actual = (event_value[i] - w)     #ALT: min(0, event_value[i] - w) + max(0, event_value[i] - w)
     if i == 0:
-        s[i] = (event_value[i] - w)
-        sp[i] = max(0, event_value[i] - w)
-        sn[i] = min(0, event_value[i] - w)
+        s[i] = value_actual
+        sp[i] = value_actual
+        if sp[i] < 0: sp[i] = 0  # sp wird nie < 0
+        sn[i] = value_actual
+        if sn[i] > 0: sp[i] = 0  # sn wird nie > 0
     else:
-        s[i] = s[i-1] + (event_value[i] - w)
-        sp[i] = sp[i-1] + max(0, event_value[i] - w)
-        sn[i] = sn[i-1] + min(0, event_value[i] - w)
+        s[i] = s[i-1] + value_actual    #ALT: + (event_value[i] - w)
+        sp[i] = sp[i-1] + value_actual
+        if sp[i] < 0: sp[i] = 0     # sp wird nie < 0
+        sn[i] = sn[i-1] + value_actual
+        if sn[i] > 0: sn[i] = 0     # sn wird nie > 0
+
     if (s[i] < -h or s[i] > h) and bool:
         print("CUSUM an der Stelle  " + str(i) + "  zur Zeit  " + str(time[i]) + "  Minuten ab Start der Sonde.")
         bool = False
