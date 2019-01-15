@@ -1,4 +1,3 @@
-# CUSUM New - Formel nach Wikipedia - Orientierung an cusum_felix und test_cusum
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,6 +27,7 @@ print("Der Mittelwert der Messwerte beträgt: " + str(w))
 s = [.0] * number
 sp = [.0] * number
 sn = [.0] * number
+detected_points = [0] * number
 time_s = time[:number]
 h = 5*w                   # Grenzwert
 i = 0
@@ -78,12 +78,28 @@ else:
 
 # Plotten der Ereignissanzahl (y-Achse) auf die Zeit (x-Achse):
 # TODO: Mit Marker und Zeitstempel
-plt.plot(time, event_value, "g-",
-         time_s, s, "b-",
-         time_s, sp, "y-",
-         time_s, sn, "r-")
-plt.xlabel('Time')
-plt.ylabel('Events')
+detected_points[10000]=7718419
+detected_points[20000]=7730000
+detected_points[30000]=7740000
+plt.figure(1)
+plt.subplot(211)
+plt.plot(time, event_value, "g-")
+plt.title('Event overview')
+plt.xlabel('Time after Start')
+plt.ylabel('#')
+for i in detected_points:
+	if i != 0:
+		plt.text(i, 40000, r'ED')
+
+plt.subplot(212)
+plt.plot(time_s, s, "b-",label='S')
+plt.plot(time_s, sp, "y-",label='SP')
+plt.plot(time_s, sn, "r-",label='SN')
+plt.title('Cusum overview')
+plt.xlabel('Time after Start')
+plt.ylabel('#')
+legend = plt.legend(loc='upper left', shadow=True, fontsize='x-small')
+#legend.get_frame().set_facecolor("C0") Frabe der Legende
 
 
 ende = tm.time()
