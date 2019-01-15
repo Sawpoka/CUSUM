@@ -84,7 +84,7 @@ while i < number:
         s[i] = value_actual
         sp[i] = value_actual
         if sp[i] < 0:
-            sp[i] = 0  # sp wird nie < 0
+            sp[i] = 0  # sp wird nie < 0 
         sn[i] = value_actual
         if sn[i] > 0:
             sp[i] = 0  # sn wird nie > 0
