@@ -128,16 +128,14 @@ plt.title('Event overview')
 # plt.xlabel('Time')
 plt.ylabel('#')
 for i in cusum_points:
-        plt.text(i, 40000, r'C')
-        # plt.annotate("C",xy=(i[0],i[1]*1.3),xytext=(i[0],i[1]*1.7),arrowprops=dict(facecolor="black",shrink=0.05),)       # Hinzufügen des richtigen cusum_points -Array nötig
+        #plt.text(i, 40000, r'C')
+        plt.annotate("C",xy=(i,40000),xytext=(i,50000),arrowprops=dict(arrowstyle("->")))#facecolor="black",shrink=0.05),horizontalalignment='center', verticalalignment='top',)
 for i in cusum_p_points:
         plt.text(i, 40000, r'C+')
 for i in cusum_n_points:
         plt.text(i, 40000, r'C-')
 #Formating time axis
-plt.gcf().autofmt_xdate()
-myFmt = mdates.DateFormatter('%m-%d')
-plt.gca().xaxis.set_major_formatter(myFmt)
+#myFmt = mdates.DateFormatter('%m-%d')
 
 
 
@@ -151,9 +149,8 @@ plt.ylabel('#')
 legend = plt.legend(loc='upper left', shadow=True, fontsize='x-small')
 #legend.get_frame().set_facecolor("C0") Farbe der Legende
 #Formating time axis
-plt.gcf().autofmt_xdate()
-myFmt2 = mdates.DateFormatter('%m-%d')
-plt.gca().xaxis.set_major_formatter(myFmt2)         ### WARUM GEHT DIE BESSERE DATUMSANZEIGE NICHT BEI BEIDEN?
+#myFmt2 = mdates.DateFormatter('%m-%d-%y')
+#plt.gca().xaxis.set_major_formatter(myFmt2)
 
 plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=None, hspace=0.3)
 
