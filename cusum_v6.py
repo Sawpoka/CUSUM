@@ -67,7 +67,7 @@ def new_average_and_index(i):
         std_abw = np.std(event_value[i:(i+min_range)])
         w = np.mean(event_value[i:(i+min_range)])
         i += 100
-    return (i)
+    return w, i
 
 
 #Funktion: setzt neue Startwerte
@@ -81,7 +81,8 @@ def new_start(i):
             sp[i] = 0  # sn wird nie > 0
 
 # Startinitialisierungen:
-i = new_average_and_index(i)
+w, i = new_average_and_index(i)
+print("start w: " + str(w))
 value_current = (event_value[i] - w)
 new_start(i)
 
@@ -100,19 +101,22 @@ while i < number: #Hauptschleife
     # Hier wird gestet ob der Grenzwert überschritten wird und wenn ja, wird dies als Event ausgegeben und startet CUSUM neu, sobald das Event zuende ist.
     if (s[i] < -h or s[i] > h):
         print("CUSUM an der Stelle  " + str(i) + "  zur Zeit  " + str(startdate_c + timedelta(minutes=time[i])) + ".")
+        print(" CUSUM:  " + str(s[i]) + "\n CUSUM+: " + str(sp[i]) + "\n CUSUM-: " + str(sn[i]) + "\n ... mit Grundniveau: " + str(w) + "\n" )
         cusum_points.append(startdate_c + timedelta(minutes=time[i]))
         new_start(i)
-        i = new_average_and_index(i)
+        w, i = new_average_and_index(i)
     if sp[i] > h:
         print("CUSUM+ an der Stelle  " + str(i) + "  zur Zeit  " + str(startdate_c + timedelta(minutes=time[i])) + ".")
+        print(" CUSUM:  " + str(s[i]) + "\n CUSUM+: " + str(sp[i]) + "\n CUSUM-: " + str(sn[i]) + "\n ... mit Grundniveau: " + str(w) + "\n" )
         cusum_p_points.append(startdate_c + timedelta(minutes=time[i]))
         new_start(i)
-        i = new_average_and_index(i)
+        w, i = new_average_and_index(i)
     if sn[i] < -h:
         print("CUSUM- an der Stelle  " + str(i) + "  zur Zeit  " + str(startdate_c + timedelta(minutes=time[i])) + ".")
+        print(" CUSUM:  " + str(s[i]) + "\n CUSUM+: " + str(sp[i]) + "\n CUSUM-: " + str(sn[i]) + "\n ... mit Grundniveau: " + str(w) + "\n" )
         cusum_n_points.append(startdate_c + timedelta(minutes=time[i]))
         new_start(i)
-        i = new_average_and_index(i)
+        w, i = new_average_and_index(i)
 
     i += 1
 
@@ -129,11 +133,13 @@ plt.title('Event overview')
 plt.ylabel('#')
 for i in cusum_points:
         #plt.text(i, 40000, r'C')
-        plt.annotate("C",xy=(i,40000),xytext=(i,50000),arrowprops=dict(arrowstyle("->")))#facecolor="black",shrink=0.05),horizontalalignment='center', verticalalignment='top',)
+        plt.annotate("C",xy=(i,40000),xytext=(i,50000),arrowprops=dict(facecolor="black",shrink=0.05),horizontalalignment='center', verticalalignment='top',)
 for i in cusum_p_points:
-        plt.text(i, 40000, r'C+')
+        #plt.text(i, 40000, r'C+')
+        plt.annotate("C+",xy=(i,40000),xytext=(i,50000),arrowprops=dict(facecolor="black",shrink=0.05),horizontalalignment='center', verticalalignment='top',)
 for i in cusum_n_points:
-        plt.text(i, 40000, r'C-')
+        #plt.text(i, 40000, r'C-')
+        plt.annotate("C-",xy=(i,40000),xytext=(i,50000),arrowprops=dict(facecolor="black",shrink=0.05),horizontalalignment='center', verticalalignment='top',)
 #Formating time axis
 #myFmt = mdates.DateFormatter('%m-%d')
 
